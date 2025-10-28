@@ -4,17 +4,10 @@ import com.dispensador.modelo.Moneda;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Clase que gestiona el cálculo y entrega de cambio
- * Utiliza algoritmo greedy para minimizar cantidad de monedas
- */
+
 public class GestorCambio {
 
-    /**
-     * Calcula el desglose de cambio en monedas
-     * @param cambio Cantidad total de cambio a devolver
-     * @return Map con la cantidad de cada tipo de moneda
-     */
+
     public static Map<Moneda, Integer> calcularDesgloseCambio(int cambio) {
         Map<Moneda, Integer> desglose = new HashMap<>();
 
@@ -43,11 +36,7 @@ public class GestorCambio {
         return desglose;
     }
 
-    /**
-     * Genera un mensaje descriptivo del cambio
-     * @param cambio Cantidad de cambio
-     * @return String con el desglose
-     */
+
     public static String generarMensajeCambio(int cambio) {
         if (cambio == 0) {
             return "No hay cambio (pago exacto)";
@@ -69,10 +58,7 @@ public class GestorCambio {
         return mensaje.toString();
     }
 
-    /**
-     * Imprime el cambio en formato tabular
-     * @param cambio Cantidad de cambio
-     */
+
     public static void imprimirCambio(int cambio) {
         System.out.println("\n╔═══════════════════════════════╗");
         System.out.println("║      CAMBIO A DEVOLVER        ║");

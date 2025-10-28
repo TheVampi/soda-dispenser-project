@@ -1,7 +1,6 @@
 package com.dispensador.terminal;
 
 import com.dispensador.automata.AutomataAFD;
-import com.dispensador.automata.Estado;
 import com.dispensador.controlador.GestorCambio;
 import com.dispensador.modelo.Moneda;
 import com.dispensador.modelo.Producto;
@@ -46,7 +45,7 @@ public class SimuladorTerminal {
                     System.out.println("\n¡Gracias por usar el dispensador!");
                     continuar = false;
                 }
-                default -> System.out.println("❌ Opción inválida");
+                default -> System.out.println("Opcion invalida");
             }
         }
 
@@ -60,44 +59,40 @@ public class SimuladorTerminal {
         System.out.println("""
             ╔════════════════════════════════════════════════════════╗
             ║                                                        ║
-            ║       🥤 DISPENSADOR DE REFRESCOS 🥤                  ║
-            ║            Simulación con Autómata AFD                 ║
-            ║                                                        ║
-            ║        Proyecto de Teoría de la Computación           ║
+            ║         DISPENSADOR DE REFRESCOS                       ║
+            ║            Simulacion con Automata AFD                 ║
+            ║             IntelleVend 2000                           ║
+            ║        Proyecto de Lenguajes y autómatas I             ║
             ║                                                        ║
             ╚════════════════════════════════════════════════════════╝
             """);
     }
 
-    /**
-     * Muestra el menú principal
-     */
+
     private void mostrarMenuPrincipal() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("SALDO ACTUAL: $" + automata.getSaldoActual() + " | Estado: " + automata.getEstadoActual());
         System.out.println("=".repeat(60));
-        System.out.println("1. 🛒 Comprar producto");
-        System.out.println("2. 💰 Insertar monedas");
-        System.out.println("3. 📊 Ver estado del autómata");
-        System.out.println("4. 📋 Ver catálogo de productos");
-        System.out.println("5. 🔄 Ver tabla de transiciones");
-        System.out.println("6. 📜 Ver historial");
-        System.out.println("7. ❌ Cancelar y devolver dinero");
-        System.out.println("8. 🚪 Salir");
-        System.out.print("\nSeleccione una opción: ");
+        System.out.println("1. Comprar producto");
+        System.out.println("2. Insertar monedas");
+        System.out.println("3. Ver estado del automata");
+        System.out.println("4. Ver historial de transiciones");
+        System.out.println("5. Ver tabla de transiciones");
+        System.out.println("6. Salir");
+        System.out.println("7. Cancelar y devolver dinero");
+        System.out.println("8. Salir");
+        System.out.print("\nSeleccione una opcion: ");
     }
 
-    /**
-     * Proceso de compra de producto
-     */
+
     private void comprarProducto() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("PROCESO DE COMPRA");
         System.out.println("=".repeat(60));
 
         if (!automata.estaEnEstadoFinal()) {
-            System.out.println("❌ Saldo insuficiente para comprar productos");
-            System.out.println("💡 El producto más barato cuesta $15");
+            System.out.println("Saldo insuficiente para comprar productos");
+            System.out.println("El producto mas barato cuesta $15");
             return;
         }
 
@@ -111,22 +106,22 @@ public class SimuladorTerminal {
         }
 
         if (seleccion < 1 || seleccion > catalogo.length) {
-            System.out.println("❌ Producto no válido");
+            System.out.println("Producto no valido");
             return;
         }
 
         Producto productoSeleccionado = catalogo[seleccion - 1];
 
         if (!productoSeleccionado.hayStock()) {
-            System.out.println("❌ Producto agotado");
+            System.out.println("Producto agotado");
             return;
         }
 
         if (!automata.puedaComprar(productoSeleccionado.getPrecio())) {
-            System.out.println("❌ Saldo insuficiente");
-            System.out.println("💰 Saldo actual: $" + automata.getSaldoActual());
-            System.out.println("💵 Precio producto: $" + productoSeleccionado.getPrecio());
-            System.out.println("⚠ Faltan: $" + (productoSeleccionado.getPrecio() - automata.getSaldoActual()));
+            System.out.println("Saldo insuficiente");
+            System.out.println("Saldo actual: $" + automata.getSaldoActual());
+            System.out.println("Precio producto: $" + productoSeleccionado.getPrecio());
+            System.out.println("Faltan: $" + (productoSeleccionado.getPrecio() - automata.getSaldoActual()));
             return;
         }
 
@@ -134,22 +129,20 @@ public class SimuladorTerminal {
         int cambio = automata.realizarCompra(productoSeleccionado.getPrecio());
         productoSeleccionado.reducirStock();
 
-        System.out.println("\n✓ ¡COMPRA EXITOSA!");
-        System.out.println("🥤 Producto: " + productoSeleccionado.getNombre());
-        System.out.println("💵 Precio: $" + productoSeleccionado.getPrecio());
+        System.out.println("\nCOMPRA EXITOSA!");
+        System.out.println("Producto: " + productoSeleccionado.getNombre());
+        System.out.println("Precio: $" + productoSeleccionado.getPrecio());
 
         if (cambio > 0) {
             GestorCambio.imprimirCambio(cambio);
         } else {
-            System.out.println("✓ Pago exacto - Sin cambio");
+            System.out.println("Pago exacto - Sin cambio");
         }
 
-        System.out.println("\n🎉 ¡Disfruta tu bebida!");
+        System.out.println("\nDisfruta tu bebida!");
     }
 
-    /**
-     * Proceso de inserción de monedas
-     */
+
     private void insertarMonedas() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("INSERTAR MONEDAS");
@@ -181,35 +174,31 @@ public class SimuladorTerminal {
             };
 
             if (moneda == null) {
-                System.out.println("❌ Opción inválida");
+                System.out.println("Opcion invalida");
                 continue;
             }
 
             boolean exito = automata.insertarMoneda(moneda);
 
             if (exito) {
-                System.out.println("✓ Moneda aceptada: " + moneda);
-                System.out.println("💰 Nuevo saldo: $" + automata.getSaldoActual());
+                System.out.println("Moneda aceptada: " + moneda);
+                System.out.println("Nuevo saldo: $" + automata.getSaldoActual());
 
                 if (automata.estaEnEstadoFinal()) {
-                    System.out.println("✓ Ya puede comprar productos");
+                    System.out.println("Ya puede comprar productos");
                 }
             } else {
-                System.out.println("❌ Moneda rechazada (excede máximo de $25)");
+                System.out.println("Moneda rechazada (excede maximo de $25)");
             }
         }
     }
 
-    /**
-     * Muestra el estado completo del autómata
-     */
+
     private void mostrarEstadoAutomata() {
         System.out.println("\n" + automata.getInformacion());
     }
 
-    /**
-     * Muestra el catálogo de productos
-     */
+
     private void mostrarCatalogo() {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("CATÁLOGO DE PRODUCTOS");
@@ -217,14 +206,12 @@ public class SimuladorTerminal {
         mostrarProductosDisponibles();
     }
 
-    /**
-     * Muestra productos disponibles con su información
-     */
+
     private void mostrarProductosDisponibles() {
         for (int i = 0; i < catalogo.length; i++) {
             Producto p = catalogo[i];
-            String disponibilidad = p.hayStock() ? "✓" : "✗ AGOTADO";
-            String comprableCon = automata.puedaComprar(p.getPrecio()) ? "✓ DISPONIBLE" : "✗ SALDO INSUFICIENTE";
+            String disponibilidad = p.hayStock() ? "OK" : "AGOTADO";
+            String comprableCon = automata.puedaComprar(p.getPrecio()) ? "DISPONIBLE" : "SALDO INSUFICIENTE";
 
             System.out.printf("%d. %-30s $%-3d [%s] [%s] Stock: %d%n",
                     i + 1,
@@ -237,9 +224,7 @@ public class SimuladorTerminal {
         }
     }
 
-    /**
-     * Muestra la tabla completa de transiciones
-     */
+
     private void mostrarTablaTransiciones() {
         System.out.println("\n¿Desea ver la tabla completa? (Puede ser muy larga) [S/N]: ");
         String respuesta = scanner.nextLine().trim().toUpperCase();
@@ -249,31 +234,24 @@ public class SimuladorTerminal {
         }
     }
 
-    /**
-     * Muestra el historial de eventos
-     */
+
     private void verHistorial() {
         automata.imprimirHistorial();
     }
 
-    /**
-     * Cancela la transacción actual
-     */
+
     private void cancelarTransaccion() {
         int saldoDevuelto = automata.cancelarTransaccion();
 
         if (saldoDevuelto > 0) {
-            System.out.println("\n⚠ Transacción cancelada");
+            System.out.println("\nTransaccion cancelada");
             GestorCambio.imprimirCambio(saldoDevuelto);
         } else {
-            System.out.println("\n✓ No hay saldo para devolver");
+            System.out.println("\nNo hay saldo para devolver");
         }
     }
 
-    /**
-     * Lee una opción numérica del usuario
-     * @return Número ingresado o -1 si es inválido
-     */
+
     private int leerOpcion() {
         try {
             String input = scanner.nextLine().trim();
@@ -283,9 +261,6 @@ public class SimuladorTerminal {
         }
     }
 
-    /**
-     * Método main para ejecutar el simulador
-     */
     public static void main(String[] args) {
         SimuladorTerminal simulador = new SimuladorTerminal();
         simulador.iniciar();

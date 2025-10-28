@@ -1,9 +1,8 @@
 package com.dispensador.automata;
 
 
-/**
- * Enum que representa todos los estados del autómata AFD
- * Cada estado corresponde al saldo acumulado en la máquina
+/*
+ Enum que representa todos los estados del autómata
  */
 public enum Estado {
     Q0(0, false),   // Estado inicial
@@ -36,11 +35,7 @@ public enum Estado {
     private final int saldo;
     private final boolean esFinal;
 
-    /**
-     * Constructor del enum Estado
-     * @param saldo Cantidad de dinero acumulado en este estado
-     * @param esFinal Indica si es un estado final (puede realizar compras)
-     */
+
     Estado(int saldo, boolean esFinal) {
         this.saldo = saldo;
         this.esFinal = esFinal;
@@ -54,11 +49,7 @@ public enum Estado {
         return esFinal;
     }
 
-    /**
-     * Obtiene el estado correspondiente a un saldo específico
-     * @param saldo Cantidad de dinero
-     * @return Estado correspondiente o null si no existe
-     */
+
     public static Estado getEstadoPorSaldo(int saldo) {
         for (Estado estado : Estado.values()) {
             if (estado.getSaldo() == saldo) {

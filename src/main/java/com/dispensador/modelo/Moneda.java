@@ -1,8 +1,7 @@
 package com.dispensador.modelo;
 
-/**
- * Enum que representa las monedas aceptadas por el dispensador
- * Alfabeto Σ del autómata
+/*
+  Enum que representa las monedas aceptadas por el dispensador
  */
 public enum Moneda {
     UNO_PESO(1, "1 Peso"),
@@ -26,11 +25,7 @@ public enum Moneda {
         return descripcion;
     }
 
-    /**
-     * Obtiene la moneda por su valor numérico
-     * @param valor Valor de la moneda
-     * @return Moneda correspondiente o null si no existe
-     */
+
     public static Moneda getMonedaPorValor(int valor) {
         for (Moneda moneda : Moneda.values()) {
             if (moneda.getValor() == valor) {

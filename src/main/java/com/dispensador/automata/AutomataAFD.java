@@ -4,18 +4,16 @@ import com.dispensador.modelo.Moneda;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase principal que implementa el Autómata Finito Determinista (AFD)
- * M = (Q, Σ, δ, q0, F)
+/*
+ M = (Q, Σ, δ, q0, F)
  */
 public class AutomataAFD {
     private Estado estadoActual;
     private final TablaTransiciones tablaTransiciones;
     private final List<String> historial;
 
-    /**
-     * Constructor del autómata
-     * Inicializa el autómata en el estado inicial q0
+    /*
+     Inicializa el autómata en el estado inicial q0
      */
     public AutomataAFD() {
         this.estadoActual = Estado.Q0;
@@ -24,82 +22,141 @@ public class AutomataAFD {
         registrarEvento("Autómata inicializado en " + estadoActual);
     }
 
-    /**
-     * Procesa la inserción de una moneda
-     * Ejecuta la transición δ(q, σ) = q'
-     * @param moneda Moneda insertada
-     * @return true si la transición fue exitosa
-     */
+
     public boolean insertarMoneda(Moneda moneda) {
         Estado estadoAnterior = estadoActual;
         Estado estadoNuevo = tablaTransiciones.obtenerTransicion(estadoActual, moneda);
 
         if (estadoNuevo == null) {
-            registrarEvento("❌ Moneda " + moneda + " rechazada - Excedería el máximo de $25");
+            registrarEvento("Moneda " + moneda + " rechazada - Excederia el maximo de $25");
             return false;
         }
 
         estadoActual = estadoNuevo;
-        registrarEvento("✓ Transición: " + estadoAnterior + " + " + moneda + " → " + estadoActual);
+        registrarEvento("Transicion: " + estadoAnterior + " + " + moneda + " -> " + estadoActual);
         return true;
     }
 
-    /**
-     * Reinicia el autómata al estado inicial
-     */
+
     public void reiniciar() {
         estadoActual = Estado.Q0;
-        registrarEvento("♻ Autómata reiniciado a " + estadoActual);
+        registrarEvento("Automata reiniciado a " + estadoActual);
     }
 
-    /**
-     * Verifica si el autómata está en un estado final
-     * @return true si está en un estado final (puede comprar)
-     */
+
     public boolean estaEnEstadoFinal() {
         return estadoActual.esFinal();
     }
 
-    /**
-     * Obtiene el saldo acumulado actual
-     * @return Saldo en pesos
-     */
+
     public int getSaldoActual() {
         return estadoActual.getSaldo();
     }
 
-    /**
-     * Obtiene el estado actual del autómata
-     * @return Estado actual
-     */
+
     public Estado getEstadoActual() {
         return estadoActual;
     }
 
-    /**
-     * Verifica si se puede comprar un producto con el saldo actual
-     * @param precioProducto Precio del producto
-     * @return true si hay suficiente saldo
-     */
+
     public boolean puedaComprar(int precioProducto) {
         return getSaldoActual() >= precioProducto;
     }
 
-    /**
-     * Calcula el cambio a devolver
-     * @param precioProducto Precio del producto comprado
-     * @return Cantidad de cambio
-     */
+
     public int calcularCambio(int precioProducto) {
         return getSaldoActual() - precioProducto;
     }
 
-    /**
-     * Realiza la compra de un producto
-     * @param precioProducto Precio del producto
-     * @return Cambio devuelto
-     */
+
     public int realizarCompra(int precioProducto) {
         if (!puedaComprar(precioProducto)) {
-            registrarEvento("❌ Compra rechazada - Saldo insuficiente");
+            registrarEvento("Compra rechazada - Saldo insuficiente");
             return -1;
+        }
+
+        int cambio = calcularCambio(precioProducto);
+        registrarEvento("Compra realizada - Producto: $" + precioProducto + " - Cambio: $" + cambio);
+        reiniciar();
+        return cambio;
+    }
+
+
+    private void registrarEvento(String evento) {
+        historial.add(evento);
+    }
+
+
+    public List<String> getHistorial() {
+        return new ArrayList<>(historial);
+    }
+
+
+    public void mostrarHistorial() {
+        System.out.println("\n=== HISTORIAL DE TRANSICIONES ===");
+        for (String evento : historial) {
+            System.out.println(evento);
+        }
+        System.out.println("==================================\n");
+    }
+
+
+    public void imprimirHistorial() {
+        mostrarHistorial();
+    }
+
+
+    public String getInformacion() {
+        StringBuilder info = new StringBuilder();
+        info.append("\n").append("=".repeat(60)).append("\n");
+        info.append("ESTADO DEL AUTÓMATA (AFD)\n");
+        info.append("=".repeat(60)).append("\n");
+        info.append("Estado actual: ").append(estadoActual).append("\n");
+        info.append("Saldo acumulado: $").append(getSaldoActual()).append("\n");
+        info.append("Estado final: ").append(estaEnEstadoFinal() ? "SI (Puede comprar)" : "NO (Necesita mas dinero)").append("\n");
+        info.append("Saldo minimo para comprar: $15\n");
+        info.append("Saldo máximo permitido: $25\n");
+        info.append("=".repeat(60)).append("\n");
+        return info.toString();
+    }
+
+
+    public void imprimirTablaTransiciones() {
+        System.out.println("\n" + "=".repeat(80));
+        System.out.println("TABLA DE TRANSICIONES DEL AUTÓMATA δ(q, σ)");
+        System.out.println("=".repeat(80));
+        System.out.println();
+        System.out.printf("%-10s | %-10s | %-10s | %-10s | %-10s%n",
+                "Estado", "$1", "$2", "$5", "$10");
+        System.out.println("-".repeat(80));
+
+        for (Estado estado : Estado.values()) {
+            System.out.printf("%-10s | ", estado);
+
+            for (Moneda moneda : Moneda.values()) {
+                Estado siguiente = tablaTransiciones.obtenerTransicion(estado, moneda);
+                String transicion = (siguiente != null) ? siguiente.toString() : "---";
+                System.out.printf("%-10s | ", transicion);
+            }
+
+            System.out.println();
+        }
+
+        System.out.println("=".repeat(80));
+        System.out.println("Estados finales (F): Q15, Q16, Q17, Q18, Q19, Q20, Q21, Q22, Q23, Q24, Q25");
+        System.out.println("=".repeat(80));
+        System.out.println();
+    }
+
+
+    public int cancelarTransaccion() {
+        int saldoDevuelto = getSaldoActual();
+
+        if (saldoDevuelto > 0) {
+            registrarEvento("Transaccion cancelada - Devolviendo: $" + saldoDevuelto);
+            reiniciar();
+        }
+
+        return saldoDevuelto;
+    }
+}

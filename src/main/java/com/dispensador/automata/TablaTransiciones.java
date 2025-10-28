@@ -4,9 +4,9 @@ import com.dispensador.modelo.Moneda;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Clase que implementa la función de transición δ del autómata
- * δ: Q × Σ → Q
+/*
+  Clase que implementa la función de transición δ del autómata
+  δ: Q × Σ → Q
  */
 public class TablaTransiciones {
     private final Map<String, Estado> transiciones;
@@ -16,10 +16,7 @@ public class TablaTransiciones {
         inicializarTransiciones();
     }
 
-    /**
-     * Inicializa todas las transiciones del autómata
-     * Genera todas las combinaciones posibles de estados y monedas
-     */
+
     private void inicializarTransiciones() {
         // Para cada estado
         for (Estado estadoActual : Estado.values()) {
@@ -39,41 +36,24 @@ public class TablaTransiciones {
         }
     }
 
-    /**
-     * Obtiene el estado destino dada una transición
-     * @param estadoActual Estado actual del autómata
-     * @param moneda Moneda insertada
-     * @return Estado destino o null si la transición no existe
-     */
+
     public Estado obtenerTransicion(Estado estadoActual, Moneda moneda) {
         String clave = generarClave(estadoActual, moneda);
         return transiciones.get(clave);
     }
 
-    /**
-     * Verifica si existe una transición válida
-     * @param estadoActual Estado actual
-     * @param moneda Moneda a insertar
-     * @return true si la transición existe
-     */
+
     public boolean esTransicionValida(Estado estadoActual, Moneda moneda) {
         String clave = generarClave(estadoActual, moneda);
         return transiciones.containsKey(clave);
     }
 
-    /**
-     * Genera una clave única para identificar una transición
-     * @param estado Estado actual
-     * @param moneda Moneda insertada
-     * @return Clave en formato "ESTADO_MONEDA"
-     */
+
     private String generarClave(Estado estado, Moneda moneda) {
         return estado.name() + "_" + moneda.getValor();
     }
 
-    /**
-     * Imprime todas las transiciones del autómata (para debugging)
-     */
+
     public void imprimirTransiciones() {
         System.out.println("=== TABLA DE TRANSICIONES δ ===");
         for (Estado estado : Estado.values()) {
@@ -89,10 +69,7 @@ public class TablaTransiciones {
         }
     }
 
-    /**
-     * Obtiene el número total de transiciones definidas
-     * @return Cantidad de transiciones
-     */
+
     public int getTotalTransiciones() {
         return transiciones.size();
     }
