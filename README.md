@@ -1,4 +1,4 @@
-# Soda Dispenser Project - DFA Automaton Simulator
+# Soda Dispenser Project - DFA Automata Simulator
 
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
 [![Maven](https://img.shields.io/badge/Maven-3.9+-blue.svg)](https://maven.apache.org/)
