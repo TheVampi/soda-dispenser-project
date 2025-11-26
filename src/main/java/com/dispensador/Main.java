@@ -11,4 +11,4 @@ public class Main {
         SimuladorTerminal simulador = new SimuladorTerminal();
         simulador.iniciar();
     }
-5}
+}
